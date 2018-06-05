@@ -1,3 +1,5 @@
+# By Antoni Baum (Yard1), 2018
+
 from enum import Enum
 import os.path
 import random
