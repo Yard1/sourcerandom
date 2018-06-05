@@ -16,7 +16,7 @@ from setuptools import find_packages, setup, Command
 # Package meta-data.
 NAME = 'sourcerandom'
 DESCRIPTION = 'Python package for alternate true random number generator using sources provided by either TRNG online services, plaintext uint8 files (separated by whitespace) or collections of ints.'
-URL = 'https://github.com/me/myproject'
+URL = 'https://github.com/Yard1/sourcerandom'
 EMAIL = 'antoni.baum@protonmail.com'
 AUTHOR = 'Antoni Baum'
 REQUIRES_PYTHON = '>=3.5.2'
