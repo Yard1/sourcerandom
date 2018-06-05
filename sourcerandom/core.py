@@ -46,7 +46,7 @@ class SourceRandom(random.SystemRandom):
             else:
                 raise ValueError('cache_size too big for QRNG_ANU (max 1024)')
         elif os.path.isfile(str(source)):
-            print("File %s exists, using" % str(source))
+            #print("File %s exists, using" % str(source))
             self.source = self.file_generator(cache_size, source, reuse)
         else:
             #test if iterable
@@ -58,7 +58,7 @@ class SourceRandom(random.SystemRandom):
             self.source = self.iterator_generator(source, reuse)
         if preload and (source == OnlineRandomnessSource.RANDOM_ORG or source == OnlineRandomnessSource.QRNG_ANU):
             next(self.source)
-        print("SourceRandom object initialized")
+        #print("SourceRandom object initialized")
 
     # overwritten method - in SystemRandom, it gets bytes from the OS (/dev/urandom for Linux)
     def getrandbits(self, k):
@@ -77,39 +77,38 @@ class SourceRandom(random.SystemRandom):
 
     def _get_random_org_online_data(self, count):
         """_get_random_org_online_data(count) -> x.  Fetches count bytes from RANDOM.org."""
-        print('_get_random_org_online_data %s' % count)
+        #print('_get_random_org_online_data %s' % count)
         quota = requests.get('https://www.random.org/quota/?format=plain', timeout=30).text
         quota = int(quota.strip())
-        print("RANDOM.ORG quota: %s (bytes: %s)" % (str(quota), str(quota // 8)))
+        #print("RANDOM.ORG quota: %s (bytes: %s)" % (str(quota), str(quota // 8)))
         if quota < count:
-            print("Quota exhausted!")
-            return
+            raise ConnectionError("Quota exhausted!")
         url = 'https://www.random.org/cgi-bin/randbyte?nbytes=%s&format=d' % count
         response = requests.get(url, timeout=30)
         if response.status_code != 200:
             raise ConnectionError('Response status not 200!')
-        print("Connection to https://www.random.org successful!")
+        #print("Connection to https://www.random.org successful!")
         text = str(response.text).split()
         random_bytes = list(map(int, text))
         if not random_bytes or len(random_bytes) < 1:
             raise ValueError('Empty or null list')
-        print("Length: %s" % str(len(random_bytes)))
+        #print("Length: %s" % str(len(random_bytes)))
         return random_bytes
 
     def _get_qrng_anu_online_data(self, count):
         """_get_qrng_anu_online_data(count) -> x.  Fetches count bytes from qrng_anu.edu.au."""
-        print('_get_qrng_anu_online_data %s' % count)
+        #print('_get_qrng_anu_online_data %s' % count)
         url = 'https://qrng.anu.edu.au/API/jsonI.php?length=%s&type=uint8' % count
         response = requests.get(url, timeout=30)
         if response.status_code != 200:
             raise ConnectionError('Response status not 200!')
-        print("Connection to https://qrng.anu.edu.au successful!")
+        #print("Connection to https://qrng.anu.edu.au successful!")
         response = response.json()
         if not response['success']:
             raise ValueError('Server did not return success True')
         if response['length'] != count:
             raise ValueError('Server returned length != count')
-        print("Length: %s" % response['length'])
+        #print("Length: %s" % response['length'])
         return list(map(int, response['data']))
 
     def random_org_generator(self, cache_size):
