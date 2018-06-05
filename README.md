@@ -3,7 +3,7 @@ sourcerandom for Python
 
 True randomness, with minimal fuss.
 
-Alternate random number generator using sources provided by either True Random Number Generator online services (`RANDOM.org <http://random.orgu>`_ and `qrng.anu.edu.au <http://qrng.anu.edu.au>`_), plaintext uint8 files (separated by whitespace) or collections of ints.
+Alternate random number generator using sources provided by either True Random Number Generator online services ([RANDOM.org](http://random.org) and [qrng.anu.edu.au](http://qrng.anu.edu.au)), plaintext uint8 files (separated by whitespace) or collections of ints.
 
 sourcerandom's ``SourceRandom`` class extends ``SystemRandom`` class found in default ``random`` package, and only overwrites the ``getrandbits`` method, meaning all of the functionality of ``random`` package is included and unchanged.
 
@@ -17,17 +17,15 @@ Async/multithread friendly.
 
 Requires Python 3.5.2 or above, and the ``requests`` package.
 
+Pull requests are encouraged :D
+
 Installing
 ----------
-
-::
 
     pip install sourcerandom
 
 Usage
 ----------
-
-::
 
     import sourcerandom
 
